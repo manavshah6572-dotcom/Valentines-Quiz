@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Valentine Quiz ❤️</title>
+
+<style>
+body{
+  margin:0;
+  font-family: Arial, sans-serif;
+  background: linear-gradient(135deg,#ff4e8a,#ff9ecb);
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  height:100vh;
+  text-align:center;
+  color:white;
+}
+
+.box{
+  background:rgba(0,0,0,0.25);
+  padding:20px;
+  border-radius:15px;
+  width:90%;
+  max-width:450px;
+}
+
+button{
+  display:block;
+  width:100%;
+  margin:10px 0;
+  padding:12px;
+  border:none;
+  border-radius:10px;
+  font-size:15px;
+  cursor:pointer;
+  transition:0.2s;
+}
+
+button:hover{
+  transform:scale(1.05);
+}
+
+.start{
+  background:#4caf50;
+  color:white;
+  font-size:18px;
+}
+
+.next{
+  background:#2196f3;
+  color:white;
+}
+</style>
+</head>
+
+<body>
+<div class="box" id="box">
+  <h2>Welcome ❤️</h2>
+  <p>I made something special for you.</p>
+  <button class="start" onclick="startQuiz()">Start the Quiz 💘</button>
+</div>
+
+<script>
+const quiz = [
+
+{
+q:"What nickname do I call you the most?",
+a:["My Kitty","Mrs. Tiny","Drama Queen","My future wife"],
+c:1
+},
+
+{
+q:"What do I enjoy most?",
+a:["Being Dramatic","Being a Baby","Annoying You","Staying up"],
+c:2
+},
+
+{
+q:"What's the one thing you always do that makes me sort of mad?",
+a:["Eating too much ice cream","Not having proper food","Not sleeping on time","Testing my patience"],
+c:0
+},
+
+{
+q:"A bad habit of mine?",
+a:["Not being careful","Playing football in the house","Not sleeping on time","Staying in bed for too long in the morning"],
+c:2
+},
+
+{
+q:"What do I love the most?",
+a:["You","A","B","Football 🤡"],
+c:3
+}
+
+];
+
+let current = 0;
+let score = 0;
+
+function startQuiz(){
+  document.getElementById("box").innerHTML = `
+    <h3 id="progress"></h3>
+    <h2 id="question"></h2>
+    <div id="answers"></div>
+    <h3 id="result"></h3>
+  `;
+  loadQuestion();
+}
+
+function loadQuestion(){
+  document.getElementById("result").innerText="";
+  document.getElementById("progress").innerText =
+    "Question " + (current+1) + " / " + quiz.length + " ❤️";
+
+  const q = quiz[current];
+  document.getElementById("question").innerText = q.q;
+
+  const ans = document.getElementById("answers");
+  ans.innerHTML="";
+
+  q.a.forEach((text,i)=>{
+    const btn=document.createElement("button");
+    btn.innerText=text;
+    btn.onclick=()=>checkAnswer(i);
+    ans.appendChild(btn);
+  });
+}
+
+function checkAnswer(i){
+  const result = document.getElementById("result");
+
+  if(i===quiz[current].c){
+    score++;
+    result.innerText="Correct ❤️ I trained you well 😌";
+  }else{
+    result.innerText="Wrong 🤡 but you’re still my favorite person";
+  }
+
+  const next=document.createElement("button");
+  next.innerText="Next ❤️";
+  next.className="next";
+  next.onclick=()=>{
+    current++;
+    if(current<quiz.length){
+      loadQuestion();
+    }else{
+      showFinal();
+    }
+  };
+
+  document.getElementById("answers").appendChild(next);
+}
+
+function showFinal(){
+  document.getElementById("box").innerHTML =
+  "<h2>Happy Valentine’s Day ❤️</h2>" +
+  "<p>You scored " + score + " / " + quiz.length + "</p>" +
+  "<p id='typeText'></p>";
+
+  const message = "People think I love football the most…\nbut the truth is,\nI love you more. Always.";
+  let i = 0;
+
+  function type(){
+    if(i < message.length){
+      const char = message.charAt(i);
+      document.getElementById("typeText").innerHTML +=
+        (char === "\n") ? "<br>" : char;
+      i++;
+      setTimeout(type, 40);
+    } else {
+      setTimeout(showBigLove, 1200);
+    }
+  }
+
+  type();
+}
+
+function showBigLove(){
+  document.body.innerHTML = `
+    <div style="
+      height:100vh;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      color:white;
+      font-size:40px;
+      font-weight:bold;
+      text-align:center;
+      animation: fadeIn 1s ease-in-out;
+    ">
+      I LOVE YOU ❤️
+    </div>
+
+    <style>
+    @keyframes fadeIn {
+      from {opacity:0;}
+      to {opacity:1;}
+    }
+    </style>
+  `;
+}
+</script>
+</body>
+</html>
